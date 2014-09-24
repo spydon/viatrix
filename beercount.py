@@ -19,8 +19,15 @@ def count():
 
     device = viatrix.Device.create()
 
-    beers = int(input('Enter beers already sold: '))
-    crates = int(input('Enter crates already emptied: '))
+    try:
+        beers = int(input('Enter beers already sold (default 0): '))
+    except ValueError:
+        beers = 0
+
+    try:
+        crates = int(input('Enter crates already emptied (default 0): '))
+    except ValueError:
+        crates = 0
 
     def onKeyPress(event):
         global beers, crates
