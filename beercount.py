@@ -3,7 +3,6 @@ import tkinter as tk
 
 
 beers = 0
-crates = 0
 
 
 def display_beers(device, beers):
@@ -24,32 +23,42 @@ def count():
     except ValueError:
         beers = 0
 
-    crates = beers / 24
+    try:
+        refresh = int(input('Enter refresh time (default: 5000): '))
+    except ValueError:
+        refresh = 5000
 
     def onKeyPress(event):
-        global beers, crates
+        global beers
 
         if event.char in [' ', '-']:
             if event.char == ' ':
                 beers += 1
             elif event.char == '-':
                 beers -= 1
-            text.delete('1.0', '2.0')
-            text.insert('0.0', 'Beers: %d\n' % (beers))
-            display_beers(device, beers)
 
-            new_crates = beers / 24
-            if new_crates != crates:
-                crates = new_crates
-                text.delete('2.0', '3.0')
-                text.insert('2.0', 'Crates: %d\n' % (crates))
-                display_crates(device, crates)
+            text.delete('1.0', '2.0')
+            text.insert('1.0', 'Beers: %d\n' % (beers))
+
+            crates = beers / 24
+            text.delete('2.0', '3.0')
+            text.insert('2.0', 'Crates: %d\n' % (crates))
+
+    def update():
+        display_beers(device, beers)
+
+        crates = beers / 24
+        display_crates(device, crates)
+
+        root.after(refresh, update)
 
     root = tk.Tk()
 
     root.attributes('-fullscreen', True)
     text = tk.Text(root, font=('Comic Sans MS', 12))
     text.pack()
+
+    crates = beers / 24
 
     text.insert('1.0', 'Beers: %d\n' % (beers))
     text.insert('2.0', 'Crates: %d\n' % (crates))
@@ -58,6 +67,8 @@ def count():
     display_crates(device, crates)
 
     root.bind('<KeyPress>', onKeyPress)
+    root.after(refresh, update)
+
     root.mainloop()
 
     device.close()
