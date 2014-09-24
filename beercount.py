@@ -17,7 +17,7 @@ def display_casks(device, casks):
 def count():
     global beers, casks
 
-    #device = viatrix.Device.create()
+    device = viatrix.Device.create()
 
     beers = int(input('Enter beers already sold: '))
     casks = int(input('Enter casks already emptied: '))
@@ -34,13 +34,13 @@ def count():
             beers += 1
             text.delete('1.0', '2.0')
             text.insert('0.0', 'Beers: %d\n' % (beers))
-            #display_beers(device, beers)
+            display_beers(device, beers)
 
         elif char == 13:
             casks += 1
             text.delete('2.0', '3.0')
             text.insert('2.0', 'Casks: %d\n' % (casks))
-            #display_casks(device, casks)
+            display_casks(device, casks)
 
     root = tk.Tk()
 
@@ -51,13 +51,13 @@ def count():
     text.insert('1.0', 'Beers: %d\n' % (beers))
     text.insert('2.0', 'Casks: %d\n' % (casks))
 
-    #display_beers(device, beers)
-    #display_casks(device, casks)
+    display_beers(device, beers)
+    display_casks(device, casks)
 
     root.bind('<KeyPress>', onKeyPress)
     root.mainloop()
 
-    #device.close()
+    device.close()
 
 
 if __name__ == '__main__':
