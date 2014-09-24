@@ -24,10 +24,7 @@ def count():
     except ValueError:
         beers = 0
 
-    try:
-        crates = int(input('Enter crates already emptied (default 0): '))
-    except ValueError:
-        crates = 0
+    crates = beers / 24
 
     def onKeyPress(event):
         global beers, crates
