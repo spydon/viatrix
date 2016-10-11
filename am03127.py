@@ -60,7 +60,7 @@ def encode_msg(board_id, data):
 
 
 def sync_transceive(port, board_id, data):
-    port.setTimeout(1)
+    port.timeout = 1
     port.write(encode_msg(board_id, data))
 
     replies = ['ACK', 'NACK']
