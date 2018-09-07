@@ -14,12 +14,12 @@ class Device:
     @staticmethod
     def get_data():
         dev = input('Device, or press enter for default (/dev/ttyUSB0): ')
-        m_id = input('ID, or press enter for default (9): ')
+        m_id = input('ID, or press enter for default (1): ')
 
         if dev == '':
             dev = '/dev/ttyUSB0'
         if m_id == '':
-            m_id = 9
+            m_id = 1
         else:
             m_id = int(m_id)
 
