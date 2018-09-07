@@ -3,28 +3,33 @@ import time
 from datetime import datetime
 import random
 from math import ceil
+import string
+import locale
 
-def display_pgw_amount(device, amount):
-    viatrix.message(device, 'B E A 5 E %d SEK' % (amount))
+def display_pgw_amount(device, page, amount):
+    format_amount = '{:,}'.format(amount).replace(',', '.')
+    viatrix.message(device, '%s A A 1 K %skr' % (page, format_amount))
 
 
 def count():
     device = viatrix.Device.create()
-    viatrix.message(device, 'A E A 5 E Recv. today:')
-    viatrix.message(device, 'C A A 2 A  ')
+    buffer = list(string.ascii_uppercase)[2:]
+    viatrix.message(device, 'A E A 2 E  ')
+    viatrix.message(device, 'B E A 2 E Recv. today:')
 
-    data = [0, 16, 60, 127, 283, 394,
-            519, 612, 777, 815, 926,
-            1027, 1122, 1232, 1416, 1529, 1622,
-            1899, 2312, 2456, 2698, 2967, 4012]
+    data = [1086864, 1616272, 1999652, 2275432, 2522875, 2853205,
+            3477041, 4682007, 6858673, 10048661, 13789367, 17544148,
+            20730371, 23947612, 27063455, 29984401, 32888173, 35855263,
+            39095658, 42512301, 46663195, 51570386, 55430182, 57696709]
 
     try:
-        refresh = int(input('Enter refresh time (default: 20): '))
+        refresh = int(input('Enter refresh time (default: 40): '))
     except ValueError:
-        refresh = 20
+        refresh = 40
 
-    viatrix.schedule(device, 'CAB')
-    amount = 0
+    start_hour = datetime.now().hour
+    start_minute = datetime.now().minute
+    amount = int(data[start_hour]+((data[start_hour+1]-data[start_hour])/(60/start_minute)))
     while(True):
         now = datetime.now()
         hour = now.hour
@@ -32,17 +37,20 @@ def count():
         minute = now.minute
         second = now.second
         max_amount = data[next_hour]
-        max_step = ((max_amount-data[hour])/(3600/refresh))*2
+        max_step = ((max_amount-data[hour])/(3600/1))*2
 
-        if(amount+max_step > max_amount):
-            max_step = max_amount-amount
+        for page in buffer:
+            if(amount+max_step > max_amount):
+                max_step = max_amount-amount
 
-        if(minute == 0 and second <= refresh):
-            amount = data[hour]
-        else:
-            amount += random.randint(0, int(max_step))
+            if(minute == 0 and second <= refresh):
+                amount = data[hour]
+            else:
+                amount += random.randint(0, int(max_step))
 
-        display_pgw_amount(device, amount)
+            display_pgw_amount(device, page, amount)
+
+        viatrix.schedule(device, string.ascii_uppercase)
         time.sleep(refresh)
         print(amount)
 
