@@ -25,7 +25,7 @@ def count():
     try:
         refresh = int(input('Enter refresh time (default: 40): '))
     except ValueError:
-        refresh = 39.7
+        refresh = 39.5
 
     start_hour = datetime.now().hour
     start_minute = datetime.now().minute+1

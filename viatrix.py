@@ -55,6 +55,11 @@ def message(device, args):
     am.sync_transceive(device.tty, device.m_id, data)
 
 
+def clear_all(device):
+    data = am.clear_all()
+    am.sync_transceive(device.tty, device.m_id, data)
+
+
 def schedule(device, args):
     order = args
     if not order:
