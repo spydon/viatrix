@@ -60,6 +60,16 @@ def clear_all(device):
     am.sync_transceive(device.tty, device.m_id, data)
 
 
+def clear_page(device, page):
+    data = am.clear_page(page)
+    am.sync_transceive(device.tty, device.m_id, data)
+
+
+def clear_schedule(device, schedule):
+    data = am.clear_schedule(schedule)
+    am.sync_transceive(device.tty, device.m_id, data)
+
+
 def schedule(device, args):
     order = args
     if not order:

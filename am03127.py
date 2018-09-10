@@ -49,8 +49,18 @@ def send_page_msg(line=1, page='A', lead=None, disp='A', wait=5, lag=None,
 def send_schedule(order='A'):
     return '<TA>00010100009912312359%s' % (order)
 
+
 def clear_all():
     return '<D*>'
+
+
+def clear_page(page):
+    return '<DLP%c>' % (page)
+
+
+def clear_schedule(schedule):
+    return '<DT%c>' % (schedule)
+
 
 def encode_msg(board_id, data):
     if board_id < 0 or board_id > 255:

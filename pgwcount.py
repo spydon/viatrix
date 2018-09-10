@@ -14,7 +14,12 @@ def display_pgw_amount(device, page, amount):
 def count():
     device = viatrix.Device.create()
     buffer = list(string.ascii_uppercase)[2:]
-    viatrix.message(device, 'A E A 1 E  ')
+    refresh = 38.2
+
+    viatrix.clear_all(device)
+    time.sleep(1)
+
+    viatrix.message(device, 'A E A 1 A  ')
     viatrix.message(device, 'B E A 2 E Recv. today:')
 
     data = [1086864, 1616272, 1999652, 2275432, 2522875, 2853205,
@@ -22,13 +27,9 @@ def count():
             20730371, 23947612, 27063455, 29984401, 32888173, 35855263,
             39095658, 42512301, 46663195, 51570386, 55430182, 56000222]
 
-    try:
-        refresh = int(input('Enter refresh time (default: 40): '))
-    except ValueError:
-        refresh = 39.5
-
+    is_first = True
     start_hour = datetime.now().hour
-    start_minute = datetime.now().minute+1
+    start_minute = datetime.now().minute+0.001
     amount = int(data[start_hour]+((data[start_hour+1]-data[start_hour])/(60/start_minute)))
     while(True):
         now = datetime.now()
@@ -51,6 +52,9 @@ def count():
             display_pgw_amount(device, page, amount)
 
         viatrix.schedule(device, string.ascii_uppercase)
+        if(is_first):
+            time.sleep(3)
+            is_first = False
         time.sleep(refresh)
 
     device.close()
