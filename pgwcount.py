@@ -14,7 +14,7 @@ def display_pgw_amount(device, page, amount):
 def count():
     device = viatrix.Device.create()
     buffer = list(string.ascii_uppercase)[2:]
-    refresh = 38.2
+    refresh = 38.25
 
     viatrix.clear_all(device)
     time.sleep(1)
